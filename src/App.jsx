@@ -3,7 +3,7 @@ import PokedexShell from './components/PokedexShell';
 import TypeChart, { typeNamesTh } from './components/TypeChart';
 import AttackSimulator from './components/AttackSimulator';
 import TypeIcon from './components/TypeIcon';
-import { typeChart } from './data/typeData';
+import { typeChart, typeColors } from './data/typeData';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('analyzer');
@@ -75,13 +75,23 @@ export default function App() {
                 {selectedPokemon ? `${selectedPokemon.nameEn} (${selectedPokemon.nameTh})` : `SCAN COMPLETED: ${type.toUpperCase()}`}
               </div>
               
-              <div style={{ margin: '0.6rem 0' }}>
-                <div className="screen-stat" style={{ paddingBottom: '0.3rem' }}>
-                  <span>ประเภทธาตุ:</span>
-                  <span style={{ color: '#fff', fontWeight: 'bold', display: 'inline-flex', gap: '0.3rem', alignItems: 'center' }}>
-                    <TypeIcon type={type} size={14} />
-                    {typeNamesTh[type].split(' ')[0]}
-                  </span>
+              <div style={{ display: 'flex', gap: '0.8rem', margin: '0.8rem 0 1.2rem 0', justifyContent: 'center' }}>
+                <div style={{
+                  backgroundColor: typeColors[type],
+                  color: '#fff',
+                  padding: '0.5rem 1.2rem',
+                  borderRadius: '20px',
+                  fontWeight: '800',
+                  fontSize: '1rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  boxShadow: `0 0 12px ${typeColors[type]}aa`,
+                  border: '2px solid rgba(255, 255, 255, 0.25)',
+                  textShadow: '0 1.5px 3px rgba(0,0,0,0.8)'
+                }}>
+                  <TypeIcon type={type} size={16} />
+                  <span>{typeNamesTh[type]}</span>
                 </div>
               </div>
 
@@ -142,19 +152,26 @@ export default function App() {
               <div className="screen-title" style={{ borderColor: 'var(--neon-cyan)' }}>
                 {selectedPokemon ? `${selectedPokemon.nameEn} (${selectedPokemon.nameTh})` : 'DUAL-TYPE ANALYZED'}
               </div>
-              <div style={{ margin: '0.5rem 0' }}>
-                <div className="screen-stat" style={{ paddingBottom: '0.4rem' }}>
-                  <span>ประเภทธาตุคู่:</span>
-                  <span style={{ color: 'var(--neon-cyan)', fontWeight: 'bold', display: 'inline-flex', gap: '0.3rem', alignItems: 'center' }}>
-                    {analyzerTypes.map((t, idx) => (
-                      <span key={t} style={{ display: 'inline-flex', gap: '0.15rem', alignItems: 'center' }}>
-                        <TypeIcon type={t} size={12} />
-                        {typeNamesTh[t].split(' ')[0]}
-                        {idx < analyzerTypes.length - 1 && ' /'}
-                      </span>
-                    ))}
-                  </span>
-                </div>
+              <div style={{ display: 'flex', gap: '0.8rem', margin: '0.8rem 0 1.2rem 0', justifyContent: 'center', flexWrap: 'wrap' }}>
+                {analyzerTypes.map(t => (
+                  <div key={t} style={{
+                    backgroundColor: typeColors[t],
+                    color: '#fff',
+                    padding: '0.5rem 1.2rem',
+                    borderRadius: '20px',
+                    fontWeight: '800',
+                    fontSize: '1rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    boxShadow: `0 0 12px ${typeColors[t]}aa`,
+                    border: '2px solid rgba(255, 255, 255, 0.25)',
+                    textShadow: '0 1.5px 3px rgba(0,0,0,0.8)'
+                  }}>
+                    <TypeIcon type={t} size={16} />
+                    <span>{typeNamesTh[t]}</span>
+                  </div>
+                ))}
               </div>
 
               <div style={{ fontSize: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '0.5rem', overflowY: 'auto', flexGrow: 1 }}>
