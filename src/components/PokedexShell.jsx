@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ScanSearch, Swords } from 'lucide-react';
 
 export default function PokedexShell({ 
   children, 
@@ -29,26 +30,30 @@ export default function PokedexShell({
       <div className="pokedex-body">
         {/* Left Side: Holographic LCD Screen & Tab Control */}
         <div className="pokedex-left">
-          <div className="screen-wrapper">
-            <div className="screen-screen">
-              {leftScreenContent}
-            </div>
-          </div>
-          
-          {/* Controls to Switch Tabs */}
-          <div className="tab-container">
+          {/* Controls to Switch Tabs - Moved to Top */}
+          <div className="tab-container" style={{ marginBottom: '1.2rem' }}>
             <button 
               className={`tab-btn ${activeTab === 'analyzer' ? 'active' : ''}`}
               onClick={() => setActiveTab('analyzer')}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}
             >
-              📊 Pokedex Scan
+              <ScanSearch size={16} />
+              Pokedex Scan
             </button>
             <button 
               className={`tab-btn ${activeTab === 'sim' ? 'active' : ''}`}
               onClick={() => setActiveTab('sim')}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}
             >
-              ⚔️ Simulator
+              <Swords size={16} />
+              Simulator
             </button>
+          </div>
+
+          <div className="screen-wrapper" style={{ flexGrow: 1 }}>
+            <div className="screen-screen">
+              {leftScreenContent}
+            </div>
           </div>
         </div>
 
