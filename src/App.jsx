@@ -37,7 +37,7 @@ export default function App() {
               <div className="screen-text" style={{ marginTop: '1.5rem', lineHeight: '1.6' }}>
                 ยินดีต้อนรับสู่ระบบค้นหาและวิเคราะห์ประเภทธาตุ! กรุณาพิมพ์ค้นหาชื่อโปเกมอน หรือกดเลือกประเภทธาตุบนตารางฝั่งขวาเพื่อวิเคราะห์...
               </div>
-              <div style={{ marginTop: 'auto', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+              <div style={{ marginTop: 'auto', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
                 VERSION 2.1.0 // COMBINED_MODE
               </div>
             </>
@@ -85,7 +85,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div style={{ fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', overflowY: 'auto' }}>
+              <div style={{ fontSize: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', overflowY: 'auto' }}>
                 <div>
                   <span style={{ color: 'var(--neon-cyan)', fontWeight: 'bold' }}>⚔️ โจมตีชนะทาง (2.0x):</span>
                   <div style={{ color: '#fff', paddingLeft: '0.5rem', marginTop: '0.1rem' }}>{formatTypeList(superEffective)}</div>
@@ -161,7 +161,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div style={{ fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: '0.5rem', overflowY: 'auto', flexGrow: 1 }}>
+              <div style={{ fontSize: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '0.5rem', overflowY: 'auto', flexGrow: 1 }}>
                 <div>
                   <span style={{ color: '#ef4444', fontWeight: 'bold' }}>🚨 แพ้ทาง (จุดอ่อน):</span>
                   <div style={{ color: '#fff', marginTop: '0.1rem', lineHeight: '1.4' }}>
@@ -247,16 +247,16 @@ export default function App() {
             </div>
 
             <div style={{ textAlign: 'center', marginTop: 'auto', marginBottom: 'auto' }}>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>สถานะการโจมตี</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: statusColor, textShadow: `0 0 10px ${statusColor}44` }}>
+              <div style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>สถานะการโจมตี</div>
+              <div style={{ fontSize: '3rem', fontWeight: 'bold', color: statusColor, textShadow: `0 0 10px ${statusColor}44` }}>
                 {mult}x
               </div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 'bold', color: statusColor, marginTop: '0.2rem', letterSpacing: '1px' }}>
+              <div style={{ fontSize: '1.05rem', fontWeight: 'bold', color: statusColor, marginTop: '0.2rem', letterSpacing: '1px' }}>
                 {impactVerdict}
               </div>
             </div>
 
-            <div style={{ marginTop: 'auto', fontSize: '0.7rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+            <div style={{ marginTop: 'auto', fontSize: '0.85rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
               RUNNING FORCE_COMBAT_LOGS... OK
             </div>
           </>

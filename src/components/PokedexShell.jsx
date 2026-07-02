@@ -22,7 +22,7 @@ export default function PokedexShell({
           <div className="led yellow" />
           <div className="led green" />
         </div>
-        <div className="pokedex-title">POKÉDEX V2.0</div>
+        <div className="pokedex-title">POKÉ-TYPE DEX</div>
       </div>
 
       {/* Main split panels */}
