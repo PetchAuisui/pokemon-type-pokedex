@@ -103,6 +103,14 @@ export default function App() {
             else if (multiplier === 0) immuneTo.push(attackingType);
           });
 
+          const superEffectiveBadges = superEffective.map(t => ({ type: t, mult: '2.0x' }));
+          const notVeryEffectiveBadges = notVeryEffective.map(t => ({ type: t, mult: '0.5x' }));
+          const noEffectBadges = noEffect.map(t => ({ type: t, mult: '0.0x' }));
+          
+          const weakToBadges = weakTo.map(t => ({ type: t, mult: '2.0x' }));
+          const resistsBadges = resists.map(t => ({ type: t, mult: '0.5x' }));
+          const immuneToBadges = immuneTo.map(t => ({ type: t, mult: '0.0x' }));
+
           return (
             <>
               <div className="screen-title" style={{ borderColor: 'var(--neon-green)' }}>
@@ -132,30 +140,30 @@ export default function App() {
               <div style={{ fontSize: '0.95rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', overflowY: 'auto' }}>
                 <div>
                   <span style={{ color: 'var(--neon-cyan)', fontWeight: 'bold' }}>⚔️ โจมตีชนะทาง (2.0x):</span>
-                  {renderBadgeList(superEffective)}
+                  {renderBadgeList(superEffectiveBadges)}
                 </div>
                 <div>
                   <span style={{ color: 'var(--text-secondary)' }}>⚔️ โจมตีเบาลง (0.5x):</span>
-                  {renderBadgeList(notVeryEffective)}
+                  {renderBadgeList(notVeryEffectiveBadges)}
                 </div>
                 {noEffect.length > 0 && (
                   <div>
                     <span style={{ color: '#ea580c' }}>⚔️ โจมตีไร้ผล (0.0x):</span>
-                    {renderBadgeList(noEffect)}
+                    {renderBadgeList(noEffectBadges)}
                   </div>
                 )}
                 <div style={{ borderTop: '1px dashed rgba(0, 240, 255, 0.2)', marginTop: '0.2rem', paddingTop: '0.3rem' }}>
                   <span style={{ color: 'var(--neon-green)', fontWeight: 'bold' }}>🛡️ จุดอ่อนป้องกัน (2.0x):</span>
-                  {renderBadgeList(weakTo)}
+                  {renderBadgeList(weakToBadges)}
                 </div>
                 <div>
                   <span style={{ color: 'var(--text-secondary)' }}>🛡️ ความต้านทาน (0.5x):</span>
-                  {renderBadgeList(resists)}
+                  {renderBadgeList(resistsBadges)}
                 </div>
                 {immuneTo.length > 0 && (
                   <div>
                     <span style={{ color: 'var(--neon-cyan)' }}>🛡️ ต้านทานสมบูรณ์ (0.0x):</span>
-                    {renderBadgeList(immuneTo)}
+                    {renderBadgeList(immuneToBadges)}
                   </div>
                 )}
               </div>
@@ -180,6 +188,9 @@ export default function App() {
             else if (multiplier < 1 && multiplier > 0) resistsTypes.push({ type: attackingType, mult: `${multiplier}x` });
             else if (multiplier === 0) immuneTypes.push(attackingType);
           });
+
+          const x2WeakBadges = x2Weak.map(t => ({ type: t, mult: '2.0x' }));
+          const immuneTypesBadges = immuneTypes.map(t => ({ type: t, mult: '0.0x' }));
 
           return (
             <>
@@ -242,7 +253,7 @@ export default function App() {
                           }}
                         >
                           <TypeIcon type={t} size={10} />
-                          <span>{typeNamesTh[t].split(' ')[0]}</span>
+                          <span>{typeNamesTh[t].split(' ')[0]} (4.0x)</span>
                         </span>
                       ))}
                     </div>
@@ -252,7 +263,7 @@ export default function App() {
                 {(x2Weak.length > 0 || x4Weak.length === 0) && (
                   <div>
                     <span style={{ color: '#f97316', fontWeight: 'bold' }}>🚨 แพ้ทางปกติ (2.0x Weakness):</span>
-                    {renderBadgeList(x2Weak)}
+                    {renderBadgeList(x2WeakBadges)}
                   </div>
                 )}
                 
@@ -263,7 +274,7 @@ export default function App() {
                 {immuneTypes.length > 0 && (
                   <div>
                     <span style={{ color: 'var(--neon-cyan)', fontWeight: 'bold' }}>⚡ ต้านทานสมบูรณ์ (ไร้ผล):</span>
-                    {renderBadgeList(immuneTypes)}
+                    {renderBadgeList(immuneTypesBadges)}
                   </div>
                 )}
               </div>
