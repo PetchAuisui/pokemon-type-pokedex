@@ -17,10 +17,44 @@ export default function App() {
   const [simDefender1, setSimDefender1] = useState('normal');
   const [simDefender2, setSimDefender2] = useState('');
 
-  // Helper to format lists for screen
-  const formatTypeList = (list) => {
-    if (list.length === 0) return 'ไม่มี';
-    return list.map(t => typeNamesTh[t].split(' ')[0]).join(', ');
+  // Helper to render type list as colorful badges for instant visual scanning
+  const renderBadgeList = (list) => {
+    if (!list || list.length === 0) {
+      return <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '0.15rem' }}>ไม่มี</div>;
+    }
+    
+    return (
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '0.25rem' }}>
+        {list.map(entry => {
+          const type = typeof entry === 'string' ? entry : entry.type;
+          const mult = typeof entry === 'object' ? entry.mult : null;
+          
+          return (
+            <span 
+              key={type} 
+              style={{
+                backgroundColor: typeColors[type],
+                color: '#fff',
+                padding: '0.15rem 0.5rem',
+                borderRadius: '6px',
+                fontSize: '0.8rem',
+                fontWeight: 'bold',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.2rem',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                textShadow: '0 1px 1px rgba(0,0,0,0.5)'
+              }}
+            >
+              <TypeIcon type={type} size={10} />
+              <span>{typeNamesTh[type].split(' ')[0]}</span>
+              {mult && <span style={{ fontSize: '0.7rem', opacity: 0.9, marginLeft: '0.05rem' }}>({mult})</span>}
+            </span>
+          );
+        })}
+      </div>
+    );
   };
 
   // Generate left screen content based on active state
@@ -95,33 +129,33 @@ export default function App() {
                 </div>
               </div>
 
-              <div style={{ fontSize: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', overflowY: 'auto' }}>
+              <div style={{ fontSize: '0.95rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', overflowY: 'auto' }}>
                 <div>
                   <span style={{ color: 'var(--neon-cyan)', fontWeight: 'bold' }}>⚔️ โจมตีชนะทาง (2.0x):</span>
-                  <div style={{ color: '#fff', paddingLeft: '0.5rem', marginTop: '0.1rem' }}>{formatTypeList(superEffective)}</div>
+                  {renderBadgeList(superEffective)}
                 </div>
                 <div>
                   <span style={{ color: 'var(--text-secondary)' }}>⚔️ โจมตีเบาลง (0.5x):</span>
-                  <div style={{ color: '#cbd5e1', paddingLeft: '0.5rem', marginTop: '0.1rem' }}>{formatTypeList(notVeryEffective)}</div>
+                  {renderBadgeList(notVeryEffective)}
                 </div>
                 {noEffect.length > 0 && (
                   <div>
                     <span style={{ color: '#ea580c' }}>⚔️ โจมตีไร้ผล (0.0x):</span>
-                    <div style={{ color: '#cbd5e1', paddingLeft: '0.5rem', marginTop: '0.1rem' }}>{formatTypeList(noEffect)}</div>
+                    {renderBadgeList(noEffect)}
                   </div>
                 )}
-                <div style={{ borderTop: '1px dashed rgba(0, 240, 255, 0.2)', marginTop: '0.3rem', paddingTop: '0.3rem' }}>
+                <div style={{ borderTop: '1px dashed rgba(0, 240, 255, 0.2)', marginTop: '0.2rem', paddingTop: '0.3rem' }}>
                   <span style={{ color: 'var(--neon-green)', fontWeight: 'bold' }}>🛡️ จุดอ่อนป้องกัน (2.0x):</span>
-                  <div style={{ color: '#fff', paddingLeft: '0.5rem', marginTop: '0.1rem' }}>{formatTypeList(weakTo)}</div>
+                  {renderBadgeList(weakTo)}
                 </div>
                 <div>
                   <span style={{ color: 'var(--text-secondary)' }}>🛡️ ความต้านทาน (0.5x):</span>
-                  <div style={{ color: '#cbd5e1', paddingLeft: '0.5rem', marginTop: '0.1rem' }}>{formatTypeList(resists)}</div>
+                  {renderBadgeList(resists)}
                 </div>
                 {immuneTo.length > 0 && (
                   <div>
                     <span style={{ color: 'var(--neon-cyan)' }}>🛡️ ต้านทานสมบูรณ์ (0.0x):</span>
-                    <div style={{ color: '#cbd5e1', paddingLeft: '0.5rem', marginTop: '0.1rem' }}>{formatTypeList(immuneTo)}</div>
+                    {renderBadgeList(immuneTo)}
                   </div>
                 )}
               </div>
@@ -141,10 +175,10 @@ export default function App() {
             analyzerTypes.forEach(defendingType => {
               multiplier *= typeChart[attackingType][defendingType];
             });
-            if (multiplier === 4) x4Weak.push(typeNamesTh[attackingType].split(' ')[0]);
-            else if (multiplier === 2) x2Weak.push(typeNamesTh[attackingType].split(' ')[0]);
-            else if (multiplier < 1 && multiplier > 0) resistsTypes.push(`${typeNamesTh[attackingType].split(' ')[0]}(${multiplier}x)`);
-            else if (multiplier === 0) immuneTypes.push(`${typeNamesTh[attackingType].split(' ')[0]}`);
+            if (multiplier === 4) x4Weak.push(attackingType);
+            else if (multiplier === 2) x2Weak.push(attackingType);
+            else if (multiplier < 1 && multiplier > 0) resistsTypes.push({ type: attackingType, mult: `${multiplier}x` });
+            else if (multiplier === 0) immuneTypes.push(attackingType);
           });
 
           return (
@@ -174,22 +208,43 @@ export default function App() {
                 ))}
               </div>
 
-              <div style={{ fontSize: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '0.5rem', overflowY: 'auto', flexGrow: 1 }}>
+              <div style={{ fontSize: '0.95rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '0.5rem', overflowY: 'auto', flexGrow: 1 }}>
                 {x4Weak.length > 0 && (
                   <div style={{ 
                     background: 'rgba(239, 68, 68, 0.15)', 
                     border: '2px dashed #ef4444', 
                     borderRadius: '10px', 
-                    padding: '0.75rem', 
-                    marginBottom: '0.2rem',
+                    padding: '0.6rem 0.75rem', 
+                    marginBottom: '0.1rem',
                     boxShadow: '0 0 15px rgba(239, 68, 68, 0.3)',
                     borderWidth: '2.5px'
                   }}>
                     <span style={{ color: '#ff4d4d', fontWeight: '800', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       ⚠️ จุดอ่อนวิกฤต (4.0x Weakness)
                     </span>
-                    <div style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 'bold', marginTop: '0.4rem', textShadow: '0 0 8px #ff4d4d', letterSpacing: '1px' }}>
-                      {x4Weak.join(', ')}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '0.3rem' }}>
+                      {x4Weak.map(t => (
+                        <span 
+                          key={t} 
+                          style={{
+                            backgroundColor: typeColors[t],
+                            color: '#fff',
+                            padding: '0.2rem 0.5rem',
+                            borderRadius: '6px',
+                            fontSize: '0.8rem',
+                            fontWeight: 'bold',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.2rem',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.3)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            textShadow: '0 1px 1px rgba(0,0,0,0.5)'
+                          }}
+                        >
+                          <TypeIcon type={t} size={10} />
+                          <span>{typeNamesTh[t].split(' ')[0]}</span>
+                        </span>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -197,24 +252,18 @@ export default function App() {
                 {(x2Weak.length > 0 || x4Weak.length === 0) && (
                   <div>
                     <span style={{ color: '#f97316', fontWeight: 'bold' }}>🚨 แพ้ทางปกติ (2.0x Weakness):</span>
-                    <div style={{ color: '#fff', marginTop: '0.1rem', lineHeight: '1.4' }}>
-                      {x2Weak.length > 0 ? x2Weak.join(', ') : 'ไม่มี'}
-                    </div>
+                    {renderBadgeList(x2Weak)}
                   </div>
                 )}
                 
                 <div>
                   <span style={{ color: 'var(--neon-green)', fontWeight: 'bold' }}>🛡️ ต้านทาน (จุดแข็ง):</span>
-                  <div style={{ color: '#fff', marginTop: '0.1rem', lineHeight: '1.4' }}>
-                    {resistsTypes.length > 0 ? resistsTypes.join(', ') : 'ไม่มี'}
-                  </div>
+                  {renderBadgeList(resistsTypes)}
                 </div>
                 {immuneTypes.length > 0 && (
                   <div>
                     <span style={{ color: 'var(--neon-cyan)', fontWeight: 'bold' }}>⚡ ต้านทานสมบูรณ์ (ไร้ผล):</span>
-                    <div style={{ color: '#fff', marginTop: '0.1rem', lineHeight: '1.4' }}>
-                      {immuneTypes.join(', ')}
-                    </div>
+                    {renderBadgeList(immuneTypes)}
                   </div>
                 )}
               </div>
