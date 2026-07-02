@@ -72,12 +72,12 @@ export default function App() {
           return (
             <>
               <div className="screen-title" style={{ borderColor: 'var(--neon-green)' }}>
-                SCAN COMPLETED: {type.toUpperCase()}
+                {selectedPokemon ? `${selectedPokemon.nameEn} (${selectedPokemon.nameTh})` : `SCAN COMPLETED: ${type.toUpperCase()}`}
               </div>
               
               <div style={{ margin: '0.6rem 0' }}>
                 <div className="screen-stat" style={{ paddingBottom: '0.3rem' }}>
-                  <span>ธาตุหลัก:</span>
+                  <span>ประเภทธาตุ:</span>
                   <span style={{ color: '#fff', fontWeight: 'bold', display: 'inline-flex', gap: '0.3rem', alignItems: 'center' }}>
                     <TypeIcon type={type} size={14} />
                     {typeNamesTh[type].split(' ')[0]}
@@ -121,7 +121,8 @@ export default function App() {
 
         if (analyzerTypes.length === 2) {
           // Calculate combined dual type defensive effectiveness
-          const weakTypes = [];
+          const x4Weak = [];
+          const x2Weak = [];
           const resistsTypes = [];
           const immuneTypes = [];
 
@@ -130,7 +131,8 @@ export default function App() {
             analyzerTypes.forEach(defendingType => {
               multiplier *= typeChart[attackingType][defendingType];
             });
-            if (multiplier > 1) weakTypes.push(`${typeNamesTh[attackingType].split(' ')[0]}(${multiplier}x)`);
+            if (multiplier === 4) x4Weak.push(typeNamesTh[attackingType].split(' ')[0]);
+            else if (multiplier === 2) x2Weak.push(typeNamesTh[attackingType].split(' ')[0]);
             else if (multiplier < 1 && multiplier > 0) resistsTypes.push(`${typeNamesTh[attackingType].split(' ')[0]}(${multiplier}x)`);
             else if (multiplier === 0) immuneTypes.push(`${typeNamesTh[attackingType].split(' ')[0]}`);
           });
@@ -138,15 +140,9 @@ export default function App() {
           return (
             <>
               <div className="screen-title" style={{ borderColor: 'var(--neon-cyan)' }}>
-                DUAL-TYPE ANALYZED
+                {selectedPokemon ? `${selectedPokemon.nameEn} (${selectedPokemon.nameTh})` : 'DUAL-TYPE ANALYZED'}
               </div>
               <div style={{ margin: '0.5rem 0' }}>
-                <div className="screen-stat">
-                  <span>ชื่อวิเคราะห์:</span>
-                  <span style={{ color: '#fff', fontWeight: 'bold' }}>
-                    {selectedPokemon ? `${selectedPokemon.nameEn} (${selectedPokemon.nameTh})` : 'ธาตุคู่กำหนดเอง'}
-                  </span>
-                </div>
                 <div className="screen-stat" style={{ paddingBottom: '0.4rem' }}>
                   <span>ประเภทธาตุคู่:</span>
                   <span style={{ color: 'var(--neon-cyan)', fontWeight: 'bold', display: 'inline-flex', gap: '0.3rem', alignItems: 'center' }}>
@@ -162,12 +158,34 @@ export default function App() {
               </div>
 
               <div style={{ fontSize: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '0.5rem', overflowY: 'auto', flexGrow: 1 }}>
-                <div>
-                  <span style={{ color: '#ef4444', fontWeight: 'bold' }}>🚨 แพ้ทาง (จุดอ่อน):</span>
-                  <div style={{ color: '#fff', marginTop: '0.1rem', lineHeight: '1.4' }}>
-                    {weakTypes.length > 0 ? weakTypes.join(', ') : 'ไม่มี'}
+                {x4Weak.length > 0 && (
+                  <div style={{ 
+                    background: 'rgba(239, 68, 68, 0.15)', 
+                    border: '2px dashed #ef4444', 
+                    borderRadius: '10px', 
+                    padding: '0.75rem', 
+                    marginBottom: '0.2rem',
+                    boxShadow: '0 0 15px rgba(239, 68, 68, 0.3)',
+                    borderWidth: '2.5px'
+                  }}>
+                    <span style={{ color: '#ff4d4d', fontWeight: '800', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      ⚠️ จุดอ่อนวิกฤต (4.0x Weakness)
+                    </span>
+                    <div style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 'bold', marginTop: '0.4rem', textShadow: '0 0 8px #ff4d4d', letterSpacing: '1px' }}>
+                      {x4Weak.join(', ')}
+                    </div>
                   </div>
-                </div>
+                )}
+                
+                {(x2Weak.length > 0 || x4Weak.length === 0) && (
+                  <div>
+                    <span style={{ color: '#f97316', fontWeight: 'bold' }}>🚨 แพ้ทางปกติ (2.0x Weakness):</span>
+                    <div style={{ color: '#fff', marginTop: '0.1rem', lineHeight: '1.4' }}>
+                      {x2Weak.length > 0 ? x2Weak.join(', ') : 'ไม่มี'}
+                    </div>
+                  </div>
+                )}
+                
                 <div>
                   <span style={{ color: 'var(--neon-green)', fontWeight: 'bold' }}>🛡️ ต้านทาน (จุดแข็ง):</span>
                   <div style={{ color: '#fff', marginTop: '0.1rem', lineHeight: '1.4' }}>
