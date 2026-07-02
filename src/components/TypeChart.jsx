@@ -33,14 +33,30 @@ export default function TypeChart({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const types = Object.keys(typeChart);
 
-  // Search filter
-  const filteredPokemon = pokemonDatabase.filter(pokemon => {
-    const term = searchTerm.toLowerCase();
+  // Search filter - prioritize startsWith matches, then contains matches
+  const term = searchTerm.toLowerCase();
+  const matchedPokemon = pokemonDatabase.filter(pokemon => {
     return (
       pokemon.nameEn.toLowerCase().includes(term) ||
       pokemon.nameTh.includes(term)
     );
-  }).slice(0, 5); // limit to 5 suggestions
+  });
+
+  matchedPokemon.sort((a, b) => {
+    const aEn = a.nameEn.toLowerCase();
+    const bEn = b.nameEn.toLowerCase();
+    const aTh = a.nameTh;
+    const bTh = b.nameTh;
+
+    const aStarts = aEn.startsWith(term) || aTh.startsWith(term);
+    const bStarts = bEn.startsWith(term) || bTh.startsWith(term);
+
+    if (aStarts && !bStarts) return -1;
+    if (!aStarts && bStarts) return 1;
+    return a.id - b.id;
+  });
+
+  const filteredPokemon = matchedPokemon.slice(0, 5); // limit to 5 suggestions
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
