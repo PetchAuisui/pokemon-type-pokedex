@@ -1,6 +1,7 @@
 import React from 'react';
 import { typeColors, typeChart } from '../data/typeData';
 import { typeNamesTh } from './TypeChart';
+import TypeIcon from './TypeIcon';
 
 export default function AttackSimulator({
   simAttacker,
@@ -66,18 +67,34 @@ export default function AttackSimulator({
           {/* Attacking Type */}
           <div className="simulator-row">
             <span className="simulator-label-text">🔴 ธาตุโจมตี:</span>
-            <select 
-              className="simulator-select"
-              value={simAttacker}
-              onChange={(e) => setSimAttacker(e.target.value)}
-              style={{ borderLeft: `5px solid ${typeColors[simAttacker]}` }}
-            >
-              {types.map(t => (
-                <option key={t} value={t}>
-                  {typeNamesTh[t].split(' ')[0]} ({t.toUpperCase()})
-                </option>
-              ))}
-            </select>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexGrow: 1 }}>
+              <span 
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  width: '28px', 
+                  height: '28px', 
+                  borderRadius: '6px', 
+                  backgroundColor: typeColors[simAttacker],
+                  color: 'white'
+                }}
+              >
+                <TypeIcon type={simAttacker} size={16} />
+              </span>
+              <select 
+                className="simulator-select"
+                value={simAttacker}
+                onChange={(e) => setSimAttacker(e.target.value)}
+                style={{ borderLeft: `3px solid ${typeColors[simAttacker]}` }}
+              >
+                {types.map(t => (
+                  <option key={t} value={t}>
+                    {typeNamesTh[t].split(' ')[0]} ({t.toUpperCase()})
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="simulator-vs">VS</div>
@@ -85,36 +102,68 @@ export default function AttackSimulator({
           {/* Defending Type 1 */}
           <div className="simulator-row">
             <span className="simulator-label-text">🔵 ธาตุรับ 1:</span>
-            <select 
-              className="simulator-select"
-              value={simDefender1}
-              onChange={(e) => setSimDefender1(e.target.value)}
-              style={{ borderLeft: `5px solid ${typeColors[simDefender1]}` }}
-            >
-              {types.map(t => (
-                <option key={t} value={t}>
-                  {typeNamesTh[t].split(' ')[0]} ({t.toUpperCase()})
-                </option>
-              ))}
-            </select>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexGrow: 1 }}>
+              <span 
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  width: '28px', 
+                  height: '28px', 
+                  borderRadius: '6px', 
+                  backgroundColor: typeColors[simDefender1],
+                  color: 'white'
+                }}
+              >
+                <TypeIcon type={simDefender1} size={16} />
+              </span>
+              <select 
+                className="simulator-select"
+                value={simDefender1}
+                onChange={(e) => setSimDefender1(e.target.value)}
+                style={{ borderLeft: `3px solid ${typeColors[simDefender1]}` }}
+              >
+                {types.map(t => (
+                  <option key={t} value={t}>
+                    {typeNamesTh[t].split(' ')[0]} ({t.toUpperCase()})
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Defending Type 2 */}
           <div className="simulator-row">
             <span className="simulator-label-text">🔵 ธาตุรับ 2:</span>
-            <select 
-              className="simulator-select"
-              value={simDefender2}
-              onChange={(e) => setSimDefender2(e.target.value)}
-              style={{ borderLeft: simDefender2 ? `5px solid ${typeColors[simDefender2]}` : '1px solid #334155' }}
-            >
-              <option value="">-- ไม่มี (Single Type) --</option>
-              {types.map(t => (
-                <option key={t} value={t}>
-                  {typeNamesTh[t].split(' ')[0]} ({t.toUpperCase()})
-                </option>
-              ))}
-            </select>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexGrow: 1 }}>
+              <span 
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  width: '28px', 
+                  height: '28px', 
+                  borderRadius: '6px', 
+                  backgroundColor: simDefender2 ? typeColors[simDefender2] : '#334155',
+                  color: 'white'
+                }}
+              >
+                {simDefender2 ? <TypeIcon type={simDefender2} size={16} /> : '?'}
+              </span>
+              <select 
+                className="simulator-select"
+                value={simDefender2}
+                onChange={(e) => setSimDefender2(e.target.value)}
+                style={{ borderLeft: simDefender2 ? `3px solid ${typeColors[simDefender2]}` : '1px solid #334155' }}
+              >
+                <option value="">-- ไม่มี (Single Type) --</option>
+                {types.map(t => (
+                  <option key={t} value={t}>
+                    {typeNamesTh[t].split(' ')[0]} ({t.toUpperCase()})
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -122,8 +171,55 @@ export default function AttackSimulator({
       {/* Result Display */}
       {multiplier !== null && (
         <div className="damage-result-box" style={{ border: `2px solid ${typeColors[simAttacker]}` }}>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>
-            ตัวคูณความเสียหายของการโจมตี
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '0.8rem' }}>
+            <span 
+              className="type-badge" 
+              style={{ 
+                backgroundColor: typeColors[simAttacker], 
+                padding: '0.2rem 0.6rem', 
+                fontSize: '0.75rem',
+                display: 'inline-flex',
+                gap: '0.25rem',
+                alignItems: 'center'
+              }}
+            >
+              <TypeIcon type={simAttacker} size={12} />
+              {typeNamesTh[simAttacker].split(' ')[0]}
+            </span>
+            <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>⚔️</span>
+            <span 
+              className="type-badge" 
+              style={{ 
+                backgroundColor: typeColors[simDefender1], 
+                padding: '0.2rem 0.6rem', 
+                fontSize: '0.75rem',
+                display: 'inline-flex',
+                gap: '0.25rem',
+                alignItems: 'center'
+              }}
+            >
+              <TypeIcon type={simDefender1} size={12} />
+              {typeNamesTh[simDefender1].split(' ')[0]}
+            </span>
+            {simDefender2 && (
+              <>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>/</span>
+                <span 
+                  className="type-badge" 
+                  style={{ 
+                    backgroundColor: typeColors[simDefender2], 
+                    padding: '0.2rem 0.6rem', 
+                    fontSize: '0.75rem',
+                    display: 'inline-flex',
+                    gap: '0.25rem',
+                    alignItems: 'center'
+                  }}
+                >
+                  <TypeIcon type={simDefender2} size={12} />
+                  {typeNamesTh[simDefender2].split(' ')[0]}
+                </span>
+              </>
+            )}
           </div>
           
           <div className="damage-multiplier-large">

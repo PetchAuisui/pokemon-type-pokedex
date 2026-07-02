@@ -38,16 +38,10 @@ export default function PokedexShell({
           {/* Controls to Switch Tabs */}
           <div className="tab-container">
             <button 
-              className={`tab-btn ${activeTab === 'chart' ? 'active' : ''}`}
-              onClick={() => setActiveTab('chart')}
+              className={`tab-btn ${activeTab === 'analyzer' ? 'active' : ''}`}
+              onClick={() => setActiveTab('analyzer')}
             >
-              📊 Type Chart
-            </button>
-            <button 
-              className={`tab-btn ${activeTab === 'calc' ? 'active' : ''}`}
-              onClick={() => setActiveTab('calc')}
-            >
-              🧮 Calculator
+              📊 Pokedex Scan
             </button>
             <button 
               className={`tab-btn ${activeTab === 'sim' ? 'active' : ''}`}
